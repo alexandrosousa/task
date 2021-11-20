@@ -2,15 +2,25 @@ import React, { useState, useEffect } from 'react'
 
 import { View, Text, TouchableOpacity, FlatList, ToastAndroid } from 'react-native'
 
-import { collection, getDocs, deleteDoc, doc, onSnapshot, query, limit } from 'firebase/firestore'
+import {
+    getFirestore,
+    collection,
+    deleteDoc,
+    doc,
+    onSnapshot,
+    query,
+    limit,
+} from 'firebase/firestore'
 
 import { FontAwesome } from '@expo/vector-icons'
 
-import database from '../../config/firebaseConfig'
+import firebaseApp from '../../config/firebaseConfig'
 
 import styles from './style'
 
 export default function Task({ navigation }) {
+    const database = getFirestore(firebaseApp)
+
     // Sempre que a tela for carregada executa isso:
     const [task, setTask] = useState([])
     // const [refresh, setRefresh] = useState(false)

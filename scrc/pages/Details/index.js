@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 
-import { updateDoc, doc } from 'firebase/firestore'
+import { getFirestore, updateDoc, doc } from 'firebase/firestore'
 
 import styles from './style'
-import database from '../../config/firebaseConfig'
+import firebaseApp from '../../config/firebaseConfig'
 
 export default function Details({ navigation, route }) {
+    const database = getFirestore(firebaseApp)
+
     const [descriptionEdit, setDescriptionEdit] = useState(route.params.description)
 
     const idTask = route.params.id
