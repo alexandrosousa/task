@@ -1,10 +1,41 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 
-export default function Details() {
+import { updateDoc, doc } from 'firebase/firestore'
+
+import styles from './style'
+import database from '../../config/firebaseConfig'
+
+export default function Details({ navigation, route }) {
+    const [descriptionEdit, setDescriptionEdit] = useState(route.params.description)
+
+    const idTask = route.params.id
+
+    async function editTask(id) {
+        await updateDoc(doc(database, 'Tasks', id), {
+            description: descriptionEdit,
+        })
+
+        navigation.navigate('Task')
+    }
+
     return (
-        <View>
-            <Text>Details Página Task</Text>
+        <View style={styles.container}>
+            <Text style={styles.label}>Descrição</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Digite uma tarefa aqui"
+                onChangeText={setDescriptionEdit}
+                value={descriptionEdit}
+            />
+            <TouchableOpacity
+                style={styles.buttonNewTask}
+                onPress={() => {
+                    editTask(idTask)
+                }}
+            >
+                <Text style={styles.iconButton}>Salvar</Text>
+            </TouchableOpacity>
         </View>
     )
 }
