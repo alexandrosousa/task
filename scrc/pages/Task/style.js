@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        paddingTop: 20,
+        paddingTop: 30,
     },
     buttonNewTask: {
         width: 60,
@@ -21,6 +21,15 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 27,
         fontWeight: 'bold',
+    },
+    buttonNewLogout: {
+        width: 60,
+        height: 60,
+        position: 'absolute',
+        bottom: 30,
+        right: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     tasks: {
         width: '100%',

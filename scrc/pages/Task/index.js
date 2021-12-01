@@ -2,28 +2,34 @@ import React, { useState, useEffect } from 'react'
 
 import { View, Text, TouchableOpacity, FlatList, ToastAndroid } from 'react-native'
 
-import {
-    getFirestore,
-    collection,
-    deleteDoc,
-    doc,
-    onSnapshot,
-    query,
-    limit,
-} from 'firebase/firestore'
+import { getFirestore, collection, deleteDoc, doc, onSnapshot, query } from 'firebase/firestore'
+import { getAuth, signOut } from 'firebase/auth'
 
-import { FontAwesome } from '@expo/vector-icons'
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import firebaseApp from '../../config/firebaseConfig'
 
 import styles from './style'
 
-export default function Task({ navigation }) {
+// Este route é para poder receber os params que veio do login, no caso o id do usuário:
+export default function Task({ navigation, route }) {
     const database = getFirestore(firebaseApp)
 
     // Sempre que a tela for carregada executa isso:
     const [task, setTask] = useState([])
     // const [refresh, setRefresh] = useState(false)
+
+    function logOut() {
+        const auth = getAuth()
+
+        signOut(auth)
+            .then(() => {
+                navigation.navigate('Login')
+            })
+            .catch((error) => {
+                ToastAndroid.show('Não foi possível desconectar o usuário')
+            })
+    }
 
     async function deleteTask(id) {
         await deleteDoc(doc(database, 'Tasks', id))
@@ -115,10 +121,16 @@ export default function Task({ navigation }) {
             <TouchableOpacity
                 style={styles.buttonNewTask}
                 onPress={() => {
-                    navigation.navigate('NewTask')
+                    navigation.navigate('NewTask', { idUser: route.params.idUser })
                 }}
             >
                 <Text style={styles.iconButton}>+</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.buttonNewLogout} onPress={logOut}>
+                <Text>
+                    <MaterialCommunityIcons name={'location-exit'} size={50} color="#f92e6a" />
+                </Text>
             </TouchableOpacity>
         </View>
     )

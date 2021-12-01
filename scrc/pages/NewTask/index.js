@@ -7,16 +7,19 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore'
 import firebaseApp from '../../config/firebaseConfig'
 import styles from './style'
 
-export default function NewTask({ navigation }) {
+export default function NewTask({ navigation, route }) {
     const database = getFirestore(firebaseApp)
 
     const [description, setDescription] = useState(null)
 
     async function addTask() {
-        const documento = await addDoc(collection(database, 'Tasks'), {
-            description: description,
-            status: true,
-        })
+        const documento = await addDoc(
+            collection(database, 'usuarios/ywq067gQHjZVXAJNGLJf/tasks'),
+            {
+                description: description,
+                status: true,
+            }
+        )
 
         navigation.navigate('Task')
     }
